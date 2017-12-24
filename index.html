@@ -87,7 +87,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/12/24/two/" data-id="cjbkxdier00032nq6hqr5xice" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2017/12/24/two/" data-id="cjbkxfoyg00024qq6kp7e8j8g" class="article-share-link">Share</a>
       
       
     </footer>
@@ -137,58 +137,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/12/24/first/" data-id="cjbkxdieg00002nq6ikn1yzwg" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-springmvc入门程序" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2017/12/24/springmvc入门程序/" class="article-date">
-  <time datetime="2017-12-24T14:41:04.000Z" itemprop="datePublished">2017-12-24</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/12/24/springmvc入门程序/">springmvc入门</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h3 id="1-需求"><a href="#1-需求" class="headerlink" title="1.需求"></a>1.需求</h3><blockquote>
-<p>springmvc和mybatis使用一个案例（商品订单管理）</p>
-</blockquote>
-<h3 id="2-配置前端控制器"><a href="#2-配置前端控制器" class="headerlink" title="2.配置前端控制器"></a>2.配置前端控制器</h3><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- 前端控制器 配置--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">servlet</span>&gt;</span></span><br><span class="line">    		<span class="tag">&lt;<span class="name">servlet-name</span>&gt;</span>springmvc<span class="tag">&lt;/<span class="name">servlet-name</span>&gt;</span></span><br><span class="line">    		<span class="tag">&lt;<span class="name">servlet-class</span>&gt;</span>org.springframework.web.servlet.DispatcherServlet<span class="tag">&lt;/<span class="name">servlet-class</span>&gt;</span></span><br><span class="line">    		<span class="comment">&lt;!-- contextConfigLocation配置springmvc加载的配置文件（配置处理映射器，适配器等等）</span></span><br><span class="line"><span class="comment">    		如果不配置contextConfigLocation默认加载的是/WEB-INF/servlet名称-servlet.xml(springmvc-servlet.xml) --&gt;</span></span><br><span class="line">    		<span class="tag">&lt;<span class="name">init-param</span>&gt;</span></span><br><span class="line">    			<span class="tag">&lt;<span class="name">param-name</span>&gt;</span>contextConfigLocation<span class="tag">&lt;/<span class="name">param-name</span>&gt;</span></span><br><span class="line">    			<span class="tag">&lt;<span class="name">param-value</span>&gt;</span>classpath:springmvc.xml<span class="tag">&lt;/<span class="name">param-value</span>&gt;</span></span><br><span class="line">    		<span class="tag">&lt;/<span class="name">init-param</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">servlet</span>&gt;</span></span><br><span class="line">    </span><br><span class="line">    <span class="tag">&lt;<span class="name">servlet-mapping</span>&gt;</span></span><br><span class="line">    		<span class="tag">&lt;<span class="name">servlet-name</span>&gt;</span>springmvc<span class="tag">&lt;/<span class="name">servlet-name</span>&gt;</span></span><br><span class="line">    		<span class="comment">&lt;!-- </span></span><br><span class="line"><span class="comment">    		第一种：*.action访问以*.action结尾由DispatcherServlet进行解析</span></span><br><span class="line"><span class="comment">    		第二种：/,所有访问的地址都由DispatcherServlet进行解析，对于静态的解析需要配置不让DispatcherServlet进行解析</span></span><br><span class="line"><span class="comment">    			使用这种方式可以实现RESTful风格的url</span></span><br><span class="line"><span class="comment">    		第三种：/*,这样配置不对，使用这种配置最终要转发到一个jsp页面时仍然会由DispatcherServlet解析url地址，</span></span><br><span class="line"><span class="comment">    			不能根据jsp页面找到handler，会报错。</span></span><br><span class="line"><span class="comment">    		 --&gt;</span></span><br><span class="line">    		<span class="tag">&lt;<span class="name">url-pattern</span>&gt;</span>*.action<span class="tag">&lt;/<span class="name">url-pattern</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">servlet-mapping</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<h3 id="3-配置处理器适配器"><a href="#3-配置处理器适配器" class="headerlink" title="3.配置处理器适配器"></a>3.配置处理器适配器</h3><blockquote>
-<p>在classpath下的springmvc.xml中配置处理器映射器</p>
-</blockquote>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- 处理器适配器 </span></span><br><span class="line"><span class="comment">        所有适配器都实现HandlerAdapter接口 </span></span><br><span class="line"><span class="comment">        --&gt;</span></span><br><span class="line">        </span><br><span class="line">        <span class="tag">&lt;<span class="name">bean</span> <span class="attr">class</span>=<span class="string">"org.springframework.web.servlet.mvc.SimpleControllerHandlerAdapter"</span>&gt;</span><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<p>通过查看源码</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SimpleControllerHandlerAdapter</span> <span class="keyword">implements</span> <span class="title">HandlerAdapter</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">supports</span><span class="params">(Object handler)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> (handler <span class="keyword">instanceof</span> Controller);</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
-<p>此适配器能执行实现Controller接口的handler</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Controller</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * Process the request and return a ModelAndView object which the DispatcherServlet</span></span><br><span class="line"><span class="comment">	 * will render. A &#123;<span class="doctag">@code</span> null&#125; return value is not an error: it indicates that</span></span><br><span class="line"><span class="comment">	 * this object completed request processing itself and that there is therefore no</span></span><br><span class="line"><span class="comment">	 * ModelAndView to render.</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@param</span> request current HTTP request</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@param</span> response current HTTP response</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@return</span> a ModelAndView to render, or &#123;<span class="doctag">@code</span> null&#125; if handled directly</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@throws</span> Exception in case of errors</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="function">ModelAndView <span class="title">handleRequest</span><span class="params">(HttpServletRequest request, HttpServletResponse response)</span> <span class="keyword">throws</span> Exception</span>;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="4-编写handler"><a href="#4-编写handler" class="headerlink" title="4.编写handler"></a>4.编写handler</h3><blockquote>
-<p>需要实现Controller接口，才能由org.springframework.web.servlet.mvc.SimpleControllerHandlerAdapter适配器执行</p>
-</blockquote>
-<h3 id="5-配置处理器映射器"><a href="#5-配置处理器映射器" class="headerlink" title="5.配置处理器映射器"></a>5.配置处理器映射器</h3><h3 id="6-配置视图解析器"><a href="#6-配置视图解析器" class="headerlink" title="6.配置视图解析器"></a>6.配置视图解析器</h3>
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/12/24/springmvc入门程序/" data-id="cjbkxdiep00022nq6zgfxjamj" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2017/12/24/first/" data-id="cjbkxfoy900004qq6vtefsmzw" class="article-share-link">Share</a>
       
       
     </footer>
@@ -274,7 +223,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/12/24/动态sql/" data-id="cjbkxdies00042nq6ak8ysx5q" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2017/12/24/动态sql/" data-id="cjbkxfoyi00034qq6fyjoovf6" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/tags/">tags</a></li></ul>
@@ -321,7 +270,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/12/24/hello-world/" data-id="cjbkxdien00012nq6hcv0ep8e" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2017/12/24/hello-world/" data-id="cjbkxfoye00014qq68z6jza9e" class="article-share-link">Share</a>
       
       
     </footer>
@@ -380,10 +329,6 @@
         
           <li>
             <a href="/2017/12/24/first/">first</a>
-          </li>
-        
-          <li>
-            <a href="/2017/12/24/springmvc入门程序/">springmvc入门</a>
           </li>
         
           <li>
