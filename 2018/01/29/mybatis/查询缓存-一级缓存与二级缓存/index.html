@@ -83,20 +83,20 @@
 <meta name="keywords" content="mybatis">
 <meta property="og:type" content="article">
 <meta property="og:title" content="查询缓存-一级缓存与二级缓存">
-<meta property="og:url" content="http://yoursite.com/2018/01/29/查询缓存-一级缓存与二级缓存/index.html">
+<meta property="og:url" content="http://yoursite.com/2018/01/29/mybatis/查询缓存-一级缓存与二级缓存/index.html">
 <meta property="og:site_name" content="Hexo">
 <meta property="og:description" content="查询缓存-一级缓存与二级缓存1.什么是查询缓存  mybatis提供查询缓存，用户减轻数据压力，提高数据库性能。  mybatis提供一级缓存，和二级缓存。  Mybatis的一级缓存是指SqlSession。一级缓存的作用域是一个SqlSession。Mybatis默认开启一级缓存。在同一个SqlSession中，执行相同的查询SQL，第一次会去查询数据库，并写到缓存中；第二次直接从缓存中取。当">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://yoursite.com/2018/01/29/查询缓存-一级缓存与二级缓存/一级缓存原理.jpg">
-<meta property="og:image" content="http://yoursite.com/2018/01/29/查询缓存-一级缓存与二级缓存/一级缓存原理.jpg">
-<meta property="og:image" content="http://yoursite.com/2018/01/29/查询缓存-一级缓存与二级缓存/二级缓存原理.jpg">
-<meta property="og:image" content="http://yoursite.com/2018/01/29/查询缓存-一级缓存与二级缓存/二级缓存原理.jpg">
-<meta property="og:image" content="http://yoursite.com/2018/01/29/查询缓存-一级缓存与二级缓存/ehcachejar包截图.jpg">
+<meta property="og:image" content="http://yoursite.com/2018/01/29/mybatis/查询缓存-一级缓存与二级缓存/一级缓存原理.jpg">
+<meta property="og:image" content="http://yoursite.com/2018/01/29/mybatis/查询缓存-一级缓存与二级缓存/一级缓存原理.jpg">
+<meta property="og:image" content="http://yoursite.com/2018/01/29/mybatis/查询缓存-一级缓存与二级缓存/二级缓存原理.jpg">
+<meta property="og:image" content="http://yoursite.com/2018/01/29/mybatis/查询缓存-一级缓存与二级缓存/二级缓存原理.jpg">
+<meta property="og:image" content="http://yoursite.com/2018/01/29/mybatis/查询缓存-一级缓存与二级缓存/ehcachejar包截图.jpg">
 <meta property="og:updated_time" content="2018-01-29T03:51:22.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="查询缓存-一级缓存与二级缓存">
 <meta name="twitter:description" content="查询缓存-一级缓存与二级缓存1.什么是查询缓存  mybatis提供查询缓存，用户减轻数据压力，提高数据库性能。  mybatis提供一级缓存，和二级缓存。  Mybatis的一级缓存是指SqlSession。一级缓存的作用域是一个SqlSession。Mybatis默认开启一级缓存。在同一个SqlSession中，执行相同的查询SQL，第一次会去查询数据库，并写到缓存中；第二次直接从缓存中取。当">
-<meta name="twitter:image" content="http://yoursite.com/2018/01/29/查询缓存-一级缓存与二级缓存/一级缓存原理.jpg">
+<meta name="twitter:image" content="http://yoursite.com/2018/01/29/mybatis/查询缓存-一级缓存与二级缓存/一级缓存原理.jpg">
 
 
 
@@ -126,7 +126,7 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2018/01/29/查询缓存-一级缓存与二级缓存/"/>
+  <link rel="canonical" href="http://yoursite.com/2018/01/29/mybatis/查询缓存-一级缓存与二级缓存/"/>
 
 
 
@@ -269,7 +269,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/01/29/查询缓存-一级缓存与二级缓存/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/01/29/mybatis/查询缓存-一级缓存与二级缓存/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="hzf">
@@ -358,7 +358,7 @@
 </li>
 </ol>
 </blockquote>
-<h4 id="2-一级缓存"><a href="#2-一级缓存" class="headerlink" title="2.一级缓存"></a>2.一级缓存</h4><p><img src="/2018/01/29/查询缓存-一级缓存与二级缓存/一级缓存原理.jpg" alt=""><br><img src="/2018/01/29/查询缓存-一级缓存与二级缓存/一级缓存原理.jpg" title="This is an image"></p>
+<h4 id="2-一级缓存"><a href="#2-一级缓存" class="headerlink" title="2.一级缓存"></a>2.一级缓存</h4><p><img src="/2018/01/29/mybatis/查询缓存-一级缓存与二级缓存/一级缓存原理.jpg" alt=""><br><img src="/2018/01/29/mybatis/查询缓存-一级缓存与二级缓存/一级缓存原理.jpg" title="This is an image"></p>
 <blockquote>
 <ol>
 <li>第一次发起查询用户id为1的用户信息，先去找查询中是否有id为1的用户信息，如果没有，从数据库查询用户信息。</li>
@@ -384,7 +384,7 @@
 </blockquote>
 </li>
 </ol>
-<h4 id="3-二级缓存"><a href="#3-二级缓存" class="headerlink" title="3.二级缓存"></a>3.二级缓存</h4><p><img src="/2018/01/29/查询缓存-一级缓存与二级缓存/二级缓存原理.jpg" alt=""><br><img src="/2018/01/29/查询缓存-一级缓存与二级缓存/二级缓存原理.jpg" title="This is an image"></p>
+<h4 id="3-二级缓存"><a href="#3-二级缓存" class="headerlink" title="3.二级缓存"></a>3.二级缓存</h4><p><img src="/2018/01/29/mybatis/查询缓存-一级缓存与二级缓存/二级缓存原理.jpg" alt=""><br><img src="/2018/01/29/mybatis/查询缓存-一级缓存与二级缓存/二级缓存原理.jpg" title="This is an image"></p>
 <blockquote>
 <ol>
 <li>首先开启mybatis的二级缓存</li>
@@ -482,7 +482,7 @@
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">PerpetualCache</span> <span class="keyword">implements</span> <span class="title">Cache</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">private</span> String id;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">private</span> Map&lt;Object, Object&gt; cache = <span class="keyword">new</span> HashMap&lt;Object, Object&gt;();</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="title">PerpetualCache</span><span class="params">(String id)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.id = id;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
 </li>
 <li><p><strong>加入ehcache的jar包</strong></p>
-<p><img src="/2018/01/29/查询缓存-一级缓存与二级缓存/ehcachejar包截图.jpg" alt=""></p>
+<p><img src="/2018/01/29/mybatis/查询缓存-一级缓存与二级缓存/ehcachejar包截图.jpg" alt=""></p>
 </li>
 <li><p><strong>整合ehcache</strong></p>
 <blockquote>
@@ -554,7 +554,7 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/12/24/hello-world/" rel="next" title="Hello World">
+              <a href="/2017/12/24/mybatis/hello-world/" rel="next" title="Hello World">
                 <i class="fa fa-chevron-left"></i> Hello World
               </a>
             
@@ -564,7 +564,7 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2018/01/29/动态sql/" rel="prev" title="动态sql">
+              <a href="/2018/01/29/mybatis/动态sql/" rel="prev" title="动态sql">
                 动态sql <i class="fa fa-chevron-right"></i>
               </a>
             
