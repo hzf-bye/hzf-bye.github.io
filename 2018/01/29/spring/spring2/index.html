@@ -1,0 +1,823 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="spring," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="1. spring的bean管理（注解） 注解介绍  代码里面特殊标记，使用注解可以完成功能 注解写法 ：@注解名称（属性名称=属性值） 主注解可以使用在类上面，方法上面和属性上面    spring注解开发的准备 导入jar包   导入基本的jar包 导入aop的jar包    创建类及其方法  创建spring配置文件，引入约束   第一天做ioc基本功能，引入约束beans 做spring的">
+<meta name="keywords" content="spring">
+<meta property="og:type" content="article">
+<meta property="og:title" content="spring2">
+<meta property="og:url" content="http://yoursite.com/2018/01/29/spring/spring2/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="1. spring的bean管理（注解） 注解介绍  代码里面特殊标记，使用注解可以完成功能 注解写法 ：@注解名称（属性名称=属性值） 主注解可以使用在类上面，方法上面和属性上面    spring注解开发的准备 导入jar包   导入基本的jar包 导入aop的jar包    创建类及其方法  创建spring配置文件，引入约束   第一天做ioc基本功能，引入约束beans 做spring的">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-01-29T04:08:29.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="spring2">
+<meta name="twitter:description" content="1. spring的bean管理（注解） 注解介绍  代码里面特殊标记，使用注解可以完成功能 注解写法 ：@注解名称（属性名称=属性值） 主注解可以使用在类上面，方法上面和属性上面    spring注解开发的准备 导入jar包   导入基本的jar包 导入aop的jar包    创建类及其方法  创建spring配置文件，引入约束   第一天做ioc基本功能，引入约束beans 做spring的">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/01/29/spring/spring2/"/>
+
+
+
+
+
+  <title>spring2 | Hexo</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Hexo</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/01/29/spring/spring2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="hzf">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/logo.svg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">spring2</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-29T12:07:45+08:00">
+                2018-01-29
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="1-spring的bean管理（注解）"><a href="#1-spring的bean管理（注解）" class="headerlink" title="1. spring的bean管理（注解）"></a>1. spring的bean管理（注解）</h3><ol>
+<li><h4 id="注解介绍"><a href="#注解介绍" class="headerlink" title="注解介绍"></a>注解介绍</h4><blockquote>
+<ol>
+<li>代码里面特殊标记，使用注解可以完成功能</li>
+<li>注解写法 ：@注解名称（属性名称=属性值）</li>
+<li>主注解可以使用在类上面，方法上面和属性上面</li>
+</ol>
+</blockquote>
+</li>
+<li><h4 id="spring注解开发的准备"><a href="#spring注解开发的准备" class="headerlink" title="spring注解开发的准备"></a>spring注解开发的准备</h4><ol>
+<li><p>导入jar包</p>
+<blockquote>
+<ol>
+<li>导入基本的jar包</li>
+<li>导入aop的jar包</li>
+</ol>
+</blockquote>
+</li>
+<li><p>创建类及其方法</p>
+</li>
+<li><p>创建spring配置文件，引入约束</p>
+<blockquote>
+<ol>
+<li>第一天做ioc基本功能，引入约束beans</li>
+<li>做spring的ioc注解开发，引入新的约束</li>
+</ol>
+</blockquote>
+</li>
+<li><p>开启注解扫描</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&lt;!-- 开启注解扫描 </span><br><span class="line">	base-<span class="keyword">package</span>：指定要扫描的包（会扫描该包中的所有的类，包括包中包里面的类）</span><br><span class="line">	<span class="number">1</span>. 到包里面扫描类上、方法上、属性上是否有注解</span><br><span class="line">	 --&gt;</span><br><span class="line">	&lt;context:component-scan base-package="com.hzf.anno"&gt;&lt;/context:component-scan&gt;</span><br><span class="line">	</span><br><span class="line">	&lt;!-- 只扫描属性上方法上的注解   --&gt;</span><br><span class="line">	&lt;!-- &lt;context:annotation-config&gt;&lt;/context:annotation-config&gt; --&gt;</span><br></pre></td></tr></table></figure>
+<p>​</p>
+</li>
+</ol>
+</li>
+<li><h4 id="注解创建对象"><a href="#注解创建对象" class="headerlink" title="注解创建对象"></a>注解创建对象</h4><blockquote>
+<ol>
+<li>在创建对象的类上面使用注解实现</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&gt;</span><br><span class="line">&gt; <span class="comment">//@Componen  不写value则默认value为类名首字母小写</span></span><br><span class="line">&gt; <span class="meta">@Component</span>(value=<span class="string">"user"</span>) <span class="comment">//类似于&lt;bean id="user" class=""/&gt;</span></span><br><span class="line">&gt; <span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">User</span> </span>&#123;</span><br><span class="line">&gt;</span><br><span class="line">&gt; 	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">add</span><span class="params">()</span></span>&#123;</span><br><span class="line">&gt; 		System.out.println(<span class="string">"add........."</span>);</span><br><span class="line">&gt; 	&#125;</span><br><span class="line">&gt; &#125;</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<p>&gt;</p>
+<blockquote>
+<ol>
+<li><p>spring中提供@Component的三个衍生注解：（功能目前来讲是一致的）</p>
+<blockquote>
+<ol>
+<li>@Controller  web层</li>
+<li>@Service        业务层</li>
+<li>@Repositiry    持久层</li>
+</ol>
+</blockquote>
+<p>这三个注解是为了让标注类本身用途更清晰，spring在后续版本会对其增强</p>
+</li>
+<li><p>创建对象是单例的还是多例的</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&gt;    <span class="meta">@Component</span>(value=<span class="string">"user"</span>) <span class="comment">//类似于&lt;bean id="user" class=""/&gt;</span></span><br><span class="line">&gt;    <span class="meta">@Scope</span>(value=<span class="string">"prototype"</span>) </span><br><span class="line">&gt;    <span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">User</span> </span>&#123;</span><br><span class="line">&gt;</span><br><span class="line">&gt;    	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">add</span><span class="params">()</span></span>&#123;</span><br><span class="line">&gt;    		System.out.println(<span class="string">"add........."</span>);</span><br><span class="line">&gt;    	&#125;</span><br><span class="line">&gt;    &#125;</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+</blockquote>
+<p>&gt;</p>
+<blockquote>
+<blockquote>
+<ol>
+<li>singleton:默认值，单例的</li>
+<li>prototype:多例的</li>
+<li>request:WEB项目中，Spring创建一个Bean的对象，将对象存储到request域中。</li>
+<li>session:WEB项目中，Spring创建一个Bean的对象，将对象存储到session域中。</li>
+<li>globalSession:WEB项目中，应用在Porlet环境，如果没有Porlet环境那么globalSession相当于session.</li>
+</ol>
+</blockquote>
+</blockquote>
+</li>
+<li><h4 id="注解注入对象属性"><a href="#注解注入对象属性" class="headerlink" title="注解注入对象属性"></a>注解注入对象属性</h4><ol>
+<li><p>创建service对象，创建dao对象，在service得到dao对象</p>
+<blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">&gt; <span class="comment">//@Component(value="userService")</span></span><br><span class="line">&gt; <span class="meta">@Component</span>(<span class="string">"userService"</span>) <span class="comment">//是value时可以省略</span></span><br><span class="line">&gt; <span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">UserService</span> </span>&#123;</span><br><span class="line">&gt; 	</span><br><span class="line">&gt; 	<span class="comment">//在dao属性上面使用 注解来完成注入</span></span><br><span class="line">&gt; 	<span class="meta">@Autowired</span></span><br><span class="line">&gt; 	<span class="keyword">private</span> UserDao userDao;</span><br><span class="line">&gt; 	<span class="comment">//使用注解方式时不需要set方法</span></span><br><span class="line">&gt;</span><br><span class="line">&gt; 	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">add</span><span class="params">()</span></span>&#123;</span><br><span class="line">&gt; 		System.out.println(<span class="string">"service........"</span>);</span><br><span class="line">&gt; 		userDao.add();</span><br><span class="line">&gt; 	&#125;</span><br><span class="line">&gt; &#125;</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<p>&gt;</p>
+<blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&gt; <span class="comment">//@Component(value="userDao")</span></span><br><span class="line">&gt; <span class="meta">@Component</span>(value=<span class="string">"userDao"</span>) <span class="comment">//是value时可以省略</span></span><br><span class="line">&gt; <span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">UserDao</span> </span>&#123;</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<p>&gt;</p>
+<blockquote>
+<p>​</p>
+</blockquote>
+</li>
+<li><p>注入属性的两个注解</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//第一种方式注入属性</span></span><br><span class="line"><span class="comment">//	@Autowired</span></span><br><span class="line"><span class="comment">//	private UserDao userDao;</span></span><br><span class="line"><span class="comment">//	//使用注解方式时不需要set方法</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//第二种方式注入属性</span></span><br><span class="line"><span class="comment">//name:注解创建对象的value值</span></span><br><span class="line"><span class="meta">@Resource</span>(name=<span class="string">"userDao"</span>)</span><br><span class="line"><span class="keyword">private</span> UserDao userDao;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>​</p>
+</li>
+<li><h4 id="配置文件和注解的混合使用"><a href="#配置文件和注解的混合使用" class="headerlink" title="配置文件和注解的混合使用"></a>配置文件和注解的混合使用</h4><blockquote>
+<ol>
+<li>创建对象操作使用配置文件方式</li>
+<li>注入属性的操作使用注解方式实现</li>
+</ol>
+</blockquote>
+</li>
+</ol>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/spring/" rel="tag"># spring</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/01/29/spring/spring1/" rel="next" title="spring1">
+                <i class="fa fa-chevron-left"></i> spring1
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/01/29/spring/spring3/" rel="prev" title="spring3">
+                spring3 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="uyan_frame"></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/logo.svg"
+                alt="hzf" />
+            
+              <p class="site-author-name" itemprop="name">hzf</p>
+              <p class="site-description motion-element" itemprop="description">manba的笔记博客</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">16</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-spring的bean管理（注解）"><span class="nav-number">1.</span> <span class="nav-text">1. spring的bean管理（注解）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#注解介绍"><span class="nav-number">1.1.</span> <span class="nav-text">注解介绍</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#spring注解开发的准备"><span class="nav-number">1.2.</span> <span class="nav-text">spring注解开发的准备</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#注解创建对象"><span class="nav-number">1.3.</span> <span class="nav-text">注解创建对象</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#注解注入对象属性"><span class="nav-number">1.4.</span> <span class="nav-text">注解注入对象属性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#配置文件和注解的混合使用"><span class="nav-number">1.5.</span> <span class="nav-text">配置文件和注解的混合使用</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">hzf</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+    
+
+    
+      <!-- UY BEGIN -->
+      <script type="text/javascript" src="http://v2.uyan.cc/code/uyan.js?uid=2156783"></script>
+      <!-- UY END -->
+    
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
