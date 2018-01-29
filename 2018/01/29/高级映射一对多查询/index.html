@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="manba的笔记博客">
+<meta name="description" content="高级映射一对多查询1. 需求 查询订单及订单明细的需求。  2. sql语句 确定查询的主表：订单表 确定查询的关联表：订单明细表 1234&amp;gt; select orders.*,user.username,user.address,orderdetail.items_id,orderdetail.id orderdetail_id,orderdetail.items_num&amp;gt; from">
 <meta name="keywords" content="mybatis">
 <meta property="og:type" content="article">
 <meta property="og:title" content="高级映射一对多查询">
 <meta property="og:url" content="http://yoursite.com/2018/01/29/高级映射一对多查询/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="manba的笔记博客">
+<meta property="og:description" content="高级映射一对多查询1. 需求 查询订单及订单明细的需求。  2. sql语句 确定查询的主表：订单表 确定查询的关联表：订单明细表 1234&amp;gt; select orders.*,user.username,user.address,orderdetail.items_id,orderdetail.id orderdetail_id,orderdetail.items_num&amp;gt; from">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-01-29T03:41:43.000Z">
+<meta property="og:updated_time" content="2018-01-29T03:53:01.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="高级映射一对多查询">
-<meta name="twitter:description" content="manba的笔记博客">
+<meta name="twitter:description" content="高级映射一对多查询1. 需求 查询订单及订单明细的需求。  2. sql语句 确定查询的主表：订单表 确定查询的关联表：订单明细表 1234&amp;gt; select orders.*,user.username,user.address,orderdetail.items_id,orderdetail.id orderdetail_id,orderdetail.items_num&amp;gt; from">
 
 
 
@@ -330,7 +330,93 @@
       
 
       
-        
+        <h3 id="高级映射一对多查询"><a href="#高级映射一对多查询" class="headerlink" title="高级映射一对多查询"></a><strong>高级映射一对多查询</strong></h3><h4 id="1-需求"><a href="#1-需求" class="headerlink" title="1. 需求"></a>1. 需求</h4><blockquote>
+<p>查询订单及订单明细的需求。</p>
+</blockquote>
+<h4 id="2-sql语句"><a href="#2-sql语句" class="headerlink" title="2. sql语句"></a>2. <strong>sql语句</strong></h4><blockquote>
+<p>确定查询的主表：订单表</p>
+<p>确定查询的关联表：订单明细表</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&gt; select orders.*,user.username,user.address,orderdetail.items_id,orderdetail.id orderdetail_id,orderdetail.items_num</span><br><span class="line">&gt; from orders,user,orderdetail</span><br><span class="line">&gt; where orders.user_id = user.id and orders.id = orderdetail.orders_id</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<p>&gt;</p>
+<blockquote>
+</blockquote>
+<h4 id="3-分析"><a href="#3-分析" class="headerlink" title="3.分析"></a>3.分析</h4><blockquote>
+<p>使用resultType将上边的查询结果映射到pojo中，订单信息的就会重复</p>
+</blockquote>
+<h5 id="要求："><a href="#要求：" class="headerlink" title="要求："></a>要求：</h5><blockquote>
+<p>对orders不能出现重复记录</p>
+<p>在Orders.java中添加List<orderdetail> orderdetails属性</orderdetail></p>
+<p>最终会将订单信息映射到orders中，订单所对应的订单明细映射到orders中的orderDetails属性中。 </p>
+</blockquote>
+<h4 id="4-mapper-xml"><a href="#4-mapper-xml" class="headerlink" title="4.mapper.xml"></a>4.mapper.xml</h4><blockquote>
+<ol>
+<li><p>resultMap的定义</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">&gt;     &lt;!-- 订单及订单明细的resultMap --&gt;</span><br><span class="line">&gt;    	 &lt;resultMap type=<span class="string">"Orders"</span> id=<span class="string">"OrdersAndOrderDetailResultMap"</span> extends=<span class="string">""</span>OrdersUserResultMap<span class="string">""</span>&gt;</span><br><span class="line">&gt;    	 	&lt;!-- 订单信息 --&gt;</span><br><span class="line">&gt;    	 	&lt;!-- 用户信息 --&gt;</span><br><span class="line">&gt;    	 	&lt;!-- 使用extends继承，不用配置订单信息和用户信息的映射 --&gt;</span><br><span class="line">&gt;    	 	</span><br><span class="line">&gt;    	 	&lt;!-- 订单明细信息 </span><br><span class="line">&gt;    	 	一个订单关联查询了多条明细，要使用collection进行映射</span><br><span class="line">&gt;    	 	collection：将关联查询到多条记录映射带到集合对象中</span><br><span class="line">&gt;    	 	property:将关联查询到多条记录映射到Orders的那个属性中</span><br><span class="line">&gt;    	 	ofType:指定映射到list集合中指定的pojo类型</span><br><span class="line">&gt;    	 	--&gt;</span><br><span class="line">&gt;    	 	&lt;collection property=<span class="string">"orderdetails"</span> ofType=<span class="string">"Orderdetail"</span>&gt;</span><br><span class="line">&gt;    	 		&lt;!-- id:订单明细的唯一标识</span><br><span class="line">&gt;    	 		property:映射到Orderdetail的那个属性中</span><br><span class="line">&gt;    	 		 --&gt;</span><br><span class="line">&gt;    	 		 &lt;id column=<span class="string">"orderdetails_id"</span> property=<span class="string">"id"</span>/&gt;</span><br><span class="line">&gt;    	 		&lt;result column=<span class="string">"items_id"</span> property=<span class="string">"itemsId"</span>/&gt;</span><br><span class="line">&gt;    	 		&lt;result column=<span class="string">"items_num"</span> property=<span class="string">"items_Num"</span>/&gt;</span><br><span class="line">&gt;    	 	&lt;/collection&gt;</span><br><span class="line">&gt;    	 &lt;/resultMap&gt;</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+</blockquote>
+<p>&gt;</p>
+<blockquote>
+<ol>
+<li><p>statement的定义</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&gt;    &lt;!-- 查询订单关联查询用户信息及订单明细 resultMap映射--&gt;</span><br><span class="line">&gt;        &lt;select id=<span class="string">"findOrdersAndOrderDetailResultMap"</span> resultMap=<span class="string">"OrdersAndOrderDetailResultMap"</span>&gt;</span><br><span class="line">&gt;        	select orders.*,user.username,user.address,orderdetail.id orderdetail_id, orderdetail.items_id,orderdetail.items_num</span><br><span class="line">&gt;    		from orders,user,orderdetail</span><br><span class="line">&gt;    		where orders.user_id = user.id and orders.id = orderdetail.orders_id</span><br><span class="line">&gt;        &lt;/select&gt;</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+</blockquote>
+<p>&gt;</p>
+<h4 id="5-mapper-java"><a href="#5-mapper-java" class="headerlink" title="5.mapper.java"></a>5.mapper.java</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//查询订单关联用户查询信息及用户订单明细使用resultMap</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> List&lt;Orders&gt; <span class="title">findOrdersAndOrderDetailResultMap</span><span class="params">()</span> <span class="keyword">throws</span> Exception</span>;</span><br></pre></td></tr></table></figure>
+<h4 id="6-小结"><a href="#6-小结" class="headerlink" title="6.小结"></a>6.小结</h4><blockquote>
+<ol>
+<li><p>mybatis使用resultmap的collection对关联查询的多条记录映射到一个List集合属性中</p>
+</li>
+<li><p>使用resultType也可映射实现</p>
+<blockquote>
+<p>将订单明细映射到Orders中的ordertails属性中，需要自己处理，使用双重循环遍历，去掉重复记录，将订单明细放在ordertails中。</p>
+</blockquote>
+</li>
+</ol>
+</blockquote>
+<h4 id="7-resultMap与resultType小结"><a href="#7-resultMap与resultType小结" class="headerlink" title="7.resultMap与resultType小结"></a>7.resultMap与resultType小结</h4><ol>
+<li><p>resultType</p>
+<blockquote>
+<p>作用：</p>
+<p>​    将查询结果按照sql列名pojo属性名一致映射到pojo中</p>
+<p>场合：</p>
+<p>​    常见一些明细记录的展示，比如用户购买商品明细，将关联查询信息全部展示在页面时，此时可直接使用resultType将每一条记录映射到pojo中，在前端页面遍历list（list中是pojo）即可。</p>
+</blockquote>
+</li>
+<li><p>resultMap:</p>
+<blockquote>
+<p>使用association和collection完成一对一和一对多高级映射(对结果有特殊的映射要求)。</p>
+<p>association:</p>
+<blockquote>
+<ol>
+<li><p>作用</p>
+<p>将关联查询信息映射到一个pojo对象中。</p>
+</li>
+<li><p>场合</p>
+<p>为了方便查询关联信息可以使用association将关联订单信息映射为用户对象的pojo属性中，比如：查询订单及关联用户信息。</p>
+<p>使用resultType无法将查询结果映射到pojo对象的pojo属性中，根据结果集查询遍历的需要选择使用resultType还是resultMap.</p>
+</li>
+</ol>
+</blockquote>
+<p>collection</p>
+<blockquote>
+<ol>
+<li><p>作用</p>
+<p>将关联查询信息映射到一个list集合中</p>
+</li>
+<li><p>场合</p>
+<p>为了方便查询遍历关联信息可以使用collection将关联信息映射到list集合中，比如：查询用户权限范围模块及其下属模块的菜单，可使用collection将模块映射到模块list中，将菜单列表映射到模块对象的菜单list属性中，这样的做的目的也是方便对查询结果集进行遍历查询。</p>
+<p>如果使用resultType无法查询结果映射到list集合中。</p>
+</li>
+</ol>
+</blockquote>
+</blockquote>
+</li>
+</ol>
+
       
     </div>
     
@@ -429,8 +515,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -487,6 +582,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#高级映射一对多查询"><span class="nav-number">1.</span> <span class="nav-text">高级映射一对多查询</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-需求"><span class="nav-number">1.1.</span> <span class="nav-text">1. 需求</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-sql语句"><span class="nav-number">1.2.</span> <span class="nav-text">2. sql语句</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-分析"><span class="nav-number">1.3.</span> <span class="nav-text">3.分析</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#要求："><span class="nav-number">1.3.1.</span> <span class="nav-text">要求：</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-mapper-xml"><span class="nav-number">1.4.</span> <span class="nav-text">4.mapper.xml</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-mapper-java"><span class="nav-number">1.5.</span> <span class="nav-text">5.mapper.java</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-小结"><span class="nav-number">1.6.</span> <span class="nav-text">6.小结</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7-resultMap与resultType小结"><span class="nav-number">1.7.</span> <span class="nav-text">7.resultMap与resultType小结</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       

@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="manba的笔记博客">
+<meta name="description" content="输入映射与输出映射1.输入映射 通过parameterType指定输入参数的类型，类型可以是简单类型、hashmap、pojo包装类型。   需求  完成用户信息的综合查询，需要传入查询条件很复杂（可能包括用户信息，其他信息，比如商品、订单）   定义包装类型pojo  针对上边需求，建议使用自定义的包装类型的pojo.  在包装类型的pojo中将复杂的查询条件包装进去  123456789101">
 <meta name="keywords" content="mybatis">
 <meta property="og:type" content="article">
 <meta property="og:title" content="输入映射与输出映射">
 <meta property="og:url" content="http://yoursite.com/2018/01/29/输入映射与输出映射/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="manba的笔记博客">
+<meta property="og:description" content="输入映射与输出映射1.输入映射 通过parameterType指定输入参数的类型，类型可以是简单类型、hashmap、pojo包装类型。   需求  完成用户信息的综合查询，需要传入查询条件很复杂（可能包括用户信息，其他信息，比如商品、订单）   定义包装类型pojo  针对上边需求，建议使用自定义的包装类型的pojo.  在包装类型的pojo中将复杂的查询条件包装进去  123456789101">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-01-29T03:42:17.000Z">
+<meta property="og:updated_time" content="2018-01-29T03:53:28.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="输入映射与输出映射">
-<meta name="twitter:description" content="manba的笔记博客">
+<meta name="twitter:description" content="输入映射与输出映射1.输入映射 通过parameterType指定输入参数的类型，类型可以是简单类型、hashmap、pojo包装类型。   需求  完成用户信息的综合查询，需要传入查询条件很复杂（可能包括用户信息，其他信息，比如商品、订单）   定义包装类型pojo  针对上边需求，建议使用自定义的包装类型的pojo.  在包装类型的pojo中将复杂的查询条件包装进去  123456789101">
 
 
 
@@ -330,7 +330,128 @@
       
 
       
-        
+        <h3 id="输入映射与输出映射"><a href="#输入映射与输出映射" class="headerlink" title="输入映射与输出映射"></a><strong>输入映射与输出映射</strong></h3><h4 id="1-输入映射"><a href="#1-输入映射" class="headerlink" title="1.输入映射"></a><strong>1.输入映射</strong></h4><blockquote>
+<p>通过parameterType指定输入参数的类型，类型可以是简单类型、hashmap、pojo包装类型。</p>
+</blockquote>
+<ol>
+<li><p><strong>需求</strong></p>
+<blockquote>
+<p>完成用户信息的综合查询，需要传入查询条件很复杂（可能包括用户信息，其他信息，比如商品、订单）</p>
+</blockquote>
+</li>
+<li><p>定义包装类型pojo</p>
+<blockquote>
+<p>针对上边需求，建议使用自定义的包装类型的pojo. </p>
+<p>在包装类型的pojo中将复杂的查询条件包装进去</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">UserQueryVo</span> </span>&#123;</span><br><span class="line">	<span class="comment">//这里包装所需要的查询条件</span></span><br><span class="line">	</span><br><span class="line">	<span class="comment">//用户查询条件</span></span><br><span class="line">	<span class="keyword">private</span> UserCustom userCustom;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> UserCustom <span class="title">getUserCustom</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> userCustom;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setUserCustom</span><span class="params">(UserCustom userCustom)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">this</span>.userCustom = userCustom;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	</span><br><span class="line">	</span><br><span class="line">	<span class="comment">//其它查询条件，订单、商品</span></span><br><span class="line">	<span class="comment">//...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>mapper.xml</p>
+<blockquote>
+<p>在usermapper.xml中定义用户信息综合查询（查询条件复杂，通过高级查询进行复杂关联查询 ）</p>
+</blockquote>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&lt;!-- 用户综合查询 </span><br><span class="line">	#&#123;userCustom.sex&#125;:取出pojo包装对象中性别</span><br><span class="line">	$&#123;userCustom.username&#125;:取出pojo包装对象中用户名</span><br><span class="line">	--&gt;</span><br><span class="line">	</span><br><span class="line">	&lt;select id=<span class="string">"findUserList"</span> parameterType=<span class="string">"com.hzf.mybatis.po.UserQueryVo"</span></span><br><span class="line">					resultType=<span class="string">"com.hzf.mybatis.po.UserCustom"</span>&gt;</span><br><span class="line">		select * from user where sex=<span class="string">'#&#123;userCustom.sex&#125;'</span> and username like <span class="string">'%$&#123;userCustom.username&#125;%'</span></span><br><span class="line">	&lt;/select&gt;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>mapper.java</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">UserMapper</span> </span>&#123;</span><br><span class="line">	<span class="comment">//用户信息综合查询</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> UserCustom <span class="title">findUserList</span><span class="params">(UserQueryVo userQueryVo)</span> <span class="keyword">throws</span> Exception</span>;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>测试代码</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//用户信息综合查询</span></span><br><span class="line">	<span class="meta">@Test</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testFindUserList</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">		SqlSession sqlSession = sqlSessionFactory.openSession();</span><br><span class="line">		</span><br><span class="line">		<span class="comment">//创建UserMapper对象，mybatis自动生成mapper代理对象</span></span><br><span class="line">		UserMapper userMapper = sqlSession.getMapper(UserMapper.class);</span><br><span class="line">		</span><br><span class="line">		<span class="comment">//创建包装对象，设置查询条件</span></span><br><span class="line">		UserQueryVo userQueryVo = <span class="keyword">new</span> UserQueryVo();</span><br><span class="line">		UserCustom userCustom = <span class="keyword">new</span> UserCustom();</span><br><span class="line">		userCustom.setSex(<span class="string">"男"</span>);</span><br><span class="line">		userCustom.setUsername(<span class="string">"福"</span>);</span><br><span class="line">		userQueryVo.setUserCustom(userCustom);</span><br><span class="line">		</span><br><span class="line">		<span class="comment">//调用UserMapper的方法</span></span><br><span class="line">		List&lt;UserCustom&gt; list = (List&lt;UserCustom&gt;) userMapper.findUserList(userQueryVo);</span><br><span class="line">		</span><br><span class="line">		System.out.println(list);</span><br><span class="line">		</span><br><span class="line">		sqlSession.close();</span><br><span class="line"></span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h4 id="2-输出映射"><a href="#2-输出映射" class="headerlink" title="2.输出映射"></a><strong>2.输出映射</strong></h4><ol>
+<li><h5 id="resultType"><a href="#resultType" class="headerlink" title="resultType"></a>resultType</h5><blockquote>
+<ol>
+<li><strong>使用resultType进行输出映射，只有查询出来的列名和pojo的属性名一致，才能映射成功。</strong></li>
+<li>如果查询出来的列名和pojo的属性名全部一致,则不会创建pojo对象</li>
+<li>如果查询出来的列名和pojo的属性名有一个一致,则就会创建pojo对象</li>
+</ol>
+</blockquote>
+<ol>
+<li><p>需求</p>
+<blockquote>
+<p>用户信息的综合查询列表总数，通过查询总数和上边用户综合查询列表才可以实现分页。</p>
+</blockquote>
+</li>
+<li><p>mapper.xml</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&lt;!-- 用户信息综合查询总数 </span><br><span class="line">	parameterType:指定输入类型和findUserList一致</span><br><span class="line">	resultType:指定输出类型</span><br><span class="line">	--&gt;</span><br><span class="line">	&lt;select id=<span class="string">"findUserList"</span> parameterType=<span class="string">"com.hzf.mybatis.po.UserQueryVo"</span></span><br><span class="line">					resultType=<span class="string">"int"</span>&gt;</span><br><span class="line">		select count(*) from user where sex = #&#123;userCustom.sex&#125; and username like '%$&#123;userCustom.username&#125;%'</span><br><span class="line">	&lt;/select&gt;</span><br></pre></td></tr></table></figure>
+<p>​</p>
+</li>
+<li><p>mapper.java</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//用户信息综合查询总数</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">findUserCount</span><span class="params">(UserQueryVo userQueryVo)</span> <span class="keyword">throws</span> Exception</span>;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>测试代码</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//用户信息综合查询总数</span></span><br><span class="line">	<span class="meta">@Test</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span>  <span class="title">testFindUserCount</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">		SqlSession sqlSession = sqlSessionFactory.openSession();</span><br><span class="line">		</span><br><span class="line">		<span class="comment">//创建UserMapper对象，mybatis自动生成mapper代理对象</span></span><br><span class="line">		UserMapper userMapper = sqlSession.getMapper(UserMapper.class);</span><br><span class="line">		</span><br><span class="line">		<span class="comment">//创建包装对象，设置查询条件</span></span><br><span class="line">		UserQueryVo userQueryVo = <span class="keyword">new</span> UserQueryVo();</span><br><span class="line">		UserCustom userCustom = <span class="keyword">new</span> UserCustom();</span><br><span class="line">		userCustom.setSex(<span class="string">"男"</span>);</span><br><span class="line">		userCustom.setUsername(<span class="string">"福"</span>);</span><br><span class="line">		userQueryVo.setUserCustom(userCustom);</span><br><span class="line">		</span><br><span class="line">		<span class="comment">//调用UserMapper的方法</span></span><br><span class="line">		<span class="keyword">int</span> count = userMapper.findUserCount(userQueryVo);</span><br><span class="line">		</span><br><span class="line">		System.out.println(count);</span><br><span class="line">		</span><br><span class="line">		sqlSession.close();</span><br><span class="line"></span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>小结</p>
+<blockquote>
+<p>输出结果只有一行且一列，才可以使用简单类型输出映射。</p>
+<p><strong>输出poji对象和poji列表</strong></p>
+<p>不管是输出pojo单个对象还是一个列表（List<pojo>），在mapper.xml中指定的类型是一样的。</pojo></p>
+<ol>
+<li><p>输出单个pojo对象，方法返回值是单个对象类型。</p>
+<blockquote>
+<p>//根据用户id查询用户信息</p>
+<p>public User findUserById(int id) throws Exception;</p>
+</blockquote>
+</li>
+<li><p>输出pojo对象list，方法返回值是List<pojo></pojo></p>
+<blockquote>
+<p>//根据用户名查询用户信息</p>
+<p>public List<user> findUserByName(String name) throws Exception;</user></p>
+</blockquote>
+</li>
+<li><p>生成的动态代理对象中是根据mapper方法的返回值类型确定是调用selectOne(返回单个对象调用)还是selsectList(返回集合对象调用)</p>
+</li>
+</ol>
+</blockquote>
+</li>
+</ol>
+</li>
+<li><h5 id="resultMap"><a href="#resultMap" class="headerlink" title="resultMap"></a>resultMap</h5><blockquote>
+<p>mybatis中使用resultMap完成高级输出结果映射。</p>
+</blockquote>
+<ol>
+<li><p>resultMap使用方法</p>
+<blockquote>
+<p>如果查询出来的列名和pojo的属性名不一致，通过定义一个resultMap队列名和pojo属性名之间做一个映射关系。</p>
+</blockquote>
+<ol>
+<li>定义resultMap</li>
+<li>使用resultMap作为statement的输出映射类型。</li>
+</ol>
+</li>
+<li><p>将下边的sql使用User完成映射</p>
+<blockquote>
+<p>select id id<em>,username username</em> from user where id=#{id}</p>
+<p>User类中属性名和上边查询列名不一致</p>
+</blockquote>
+<ol>
+<li><p>定义resultMap</p>
+</li>
+<li><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">&lt;!-- 定义resultMap</span><br><span class="line">将select id id_,username username_ from user和User类中的属性作为一个映射关系</span><br><span class="line">type:resultMap最终映射的Java对象类型，可以使用别名</span><br><span class="line">id:对resultMap的唯一标识</span><br><span class="line"> --&gt;</span><br><span class="line"> &lt;resultMap type=<span class="string">"user"</span> id=<span class="string">"userResultMap"</span>&gt;</span><br><span class="line"> 	&lt;!-- id标识查询结果集的唯一标识</span><br><span class="line"> 	column：查询出来的列名</span><br><span class="line"> 	property:type指定的pojo类型中的属性名</span><br><span class="line"> 	最终resultMap对columnh和property做一个映射关系（对应关系）</span><br><span class="line"> 	 --&gt;</span><br><span class="line"> 	&lt;id column=<span class="string">"id_"</span> property=<span class="string">"id"</span>/&gt;</span><br><span class="line"> 	&lt;!-- result对普通名映射定义</span><br><span class="line"> 	column：查询出来的列名</span><br><span class="line"> 	property:type指定的pojo类型中的属性名</span><br><span class="line"> 	最终resultMap对columnh和property做一个映射关系（对应关系）</span><br><span class="line"> 	 --&gt;</span><br><span class="line"> 	&lt;result column=<span class="string">"username_"</span> property=<span class="string">"username"</span>/&gt;</span><br><span class="line"> &lt;/resultMap&gt;</span><br></pre></td></tr></table></figure>
+<p>​</p>
+</li>
+<li><p>使用resultMap作为statement的输出映射类型</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;!-- 使用resultMap进行输出映射 </span><br><span class="line">	resultMap：指定定义resultMap的id，如果这个resultMap在其他mapper文件中定义，前边需要加namespace.</span><br><span class="line">	--&gt;</span><br><span class="line">	&lt;select id=<span class="string">"findUserById"</span> parameterType=<span class="string">"int"</span> resultMap=<span class="string">"userResultMap"</span>&gt;</span><br><span class="line">		select id id_,username username_ from user where id=#&#123;id&#125;</span><br><span class="line">	&lt;/select&gt;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>mapper.java</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//根据用户id查询用户信息,使用resultMap输出</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> User <span class="title">findUserByIdResultMap</span><span class="params">(<span class="keyword">int</span> id)</span> <span class="keyword">throws</span> Exception</span>;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+</li>
+<li><p>总结</p>
+<blockquote>
+<ol>
+<li><strong>使用resultType进行输出映射，只有查询出来的列名和pojo的属性名一致，才能映射成功。</strong></li>
+<li><strong>如果查询出来的列名和pojo的属性名不一致，通过定义一个resultMap队列名和pojo属性名之间做一个映射关系。</strong></li>
+</ol>
+</blockquote>
+</li>
+</ol>
+</li>
+</ol>
+
       
     </div>
     
@@ -429,8 +550,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -487,6 +617,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#输入映射与输出映射"><span class="nav-number">1.</span> <span class="nav-text">输入映射与输出映射</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-输入映射"><span class="nav-number">1.1.</span> <span class="nav-text">1.输入映射</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-输出映射"><span class="nav-number">1.2.</span> <span class="nav-text">2.输出映射</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#resultType"><span class="nav-number">1.2.1.</span> <span class="nav-text">resultType</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#resultMap"><span class="nav-number">1.2.2.</span> <span class="nav-text">resultMap</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       

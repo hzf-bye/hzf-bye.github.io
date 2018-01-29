@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="manba的笔记博客">
+<meta name="description" content="高级映射一对一查询1. 需求 查询订单信息，关联查询创建订单的用户信息。  2. sql语句 确定查询的主表：订单表 确定查询的关联表：用户表 1234&amp;gt; select orders.*,user.username,user.address &amp;gt; from orders,user &amp;gt; where orders.user_id = user.id&amp;gt;  3. resultType">
 <meta name="keywords" content="mybatis">
 <meta property="og:type" content="article">
 <meta property="og:title" content="高级映射一对一查询">
 <meta property="og:url" content="http://yoursite.com/2018/01/29/高级映射一对一查询/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="manba的笔记博客">
+<meta property="og:description" content="高级映射一对一查询1. 需求 查询订单信息，关联查询创建订单的用户信息。  2. sql语句 确定查询的主表：订单表 确定查询的关联表：用户表 1234&amp;gt; select orders.*,user.username,user.address &amp;gt; from orders,user &amp;gt; where orders.user_id = user.id&amp;gt;  3. resultType">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-01-29T03:41:59.000Z">
+<meta property="og:updated_time" content="2018-01-29T03:53:18.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="高级映射一对一查询">
-<meta name="twitter:description" content="manba的笔记博客">
+<meta name="twitter:description" content="高级映射一对一查询1. 需求 查询订单信息，关联查询创建订单的用户信息。  2. sql语句 确定查询的主表：订单表 确定查询的关联表：用户表 1234&amp;gt; select orders.*,user.username,user.address &amp;gt; from orders,user &amp;gt; where orders.user_id = user.id&amp;gt;  3. resultType">
 
 
 
@@ -330,7 +330,63 @@
       
 
       
-        
+        <h3 id="高级映射一对一查询"><a href="#高级映射一对一查询" class="headerlink" title="高级映射一对一查询"></a><strong>高级映射一对一查询</strong></h3><h4 id="1-需求"><a href="#1-需求" class="headerlink" title="1. 需求"></a>1. <strong>需求</strong></h4><blockquote>
+<p>查询订单信息，关联查询创建订单的用户信息。</p>
+</blockquote>
+<h4 id="2-sql语句"><a href="#2-sql语句" class="headerlink" title="2. sql语句"></a>2. <strong>sql语句</strong></h4><blockquote>
+<p>确定查询的主表：订单表</p>
+<p>确定查询的关联表：用户表</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&gt; select orders.*,user.username,user.address </span><br><span class="line">&gt; from orders,user </span><br><span class="line">&gt; where orders.user_id = user.id</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<h4 id="3-resultType"><a href="#3-resultType" class="headerlink" title="3. resultType"></a>3. resultType</h4><h5 id="2-1-创建pojo"><a href="#2-1-创建pojo" class="headerlink" title="2.1 创建pojo"></a>2.1 创建pojo</h5><blockquote>
+<ol>
+<li><p>将上边的查询结果映射到pojo中，pojo中必须包含所有查询列名</p>
+</li>
+<li><p>原始的Order.java不能映射全部字段,需要创建新的pojo</p>
+</li>
+<li><p>创建一个pojo继承查询字段较多的pojo类</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">&gt;    <span class="comment">/**</span></span><br><span class="line"><span class="comment">&gt;     * 通过此类映射订单和用户查询的结果，让此类继承字段较多的pojo类</span></span><br><span class="line"><span class="comment">&gt;     * <span class="doctag">@author</span> hzf</span></span><br><span class="line"><span class="comment">&gt;     *</span></span><br><span class="line"><span class="comment">&gt;     */</span></span><br><span class="line">&gt;    <span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">OrdersCustom</span> <span class="keyword">extends</span> <span class="title">Orders</span> </span>&#123;</span><br><span class="line">&gt;    	<span class="keyword">private</span> String username;</span><br><span class="line">&gt;    	<span class="keyword">private</span> String sex;</span><br><span class="line">&gt;    	<span class="keyword">private</span> String address;</span><br><span class="line">&gt;    	</span><br><span class="line">&gt;    	<span class="function"><span class="keyword">public</span> String <span class="title">getUsername</span><span class="params">()</span> </span>&#123;</span><br><span class="line">&gt;    		<span class="keyword">return</span> username;</span><br><span class="line">&gt;    	&#125;</span><br><span class="line">&gt;    	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setUsername</span><span class="params">(String username)</span> </span>&#123;</span><br><span class="line">&gt;    		<span class="keyword">this</span>.username = username;</span><br><span class="line">&gt;    	&#125;</span><br><span class="line">&gt;    	<span class="function"><span class="keyword">public</span> String <span class="title">getSex</span><span class="params">()</span> </span>&#123;</span><br><span class="line">&gt;    		<span class="keyword">return</span> sex;</span><br><span class="line">&gt;    	&#125;</span><br><span class="line">&gt;    	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setSex</span><span class="params">(String sex)</span> </span>&#123;</span><br><span class="line">&gt;    		<span class="keyword">this</span>.sex = sex;</span><br><span class="line">&gt;    	&#125;</span><br><span class="line">&gt;    	<span class="function"><span class="keyword">public</span> String <span class="title">getAddress</span><span class="params">()</span> </span>&#123;</span><br><span class="line">&gt;    		<span class="keyword">return</span> address;</span><br><span class="line">&gt;    	&#125;</span><br><span class="line">&gt;    	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setAddress</span><span class="params">(String address)</span> </span>&#123;</span><br><span class="line">&gt;    		<span class="keyword">this</span>.address = address;</span><br><span class="line">&gt;    	&#125;</span><br><span class="line">&gt;    &#125;</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+</blockquote>
+<p>&gt;</p>
+<blockquote>
+<p>   ​</p>
+</blockquote>
+<h5 id="2-2-mapper-xml"><a href="#2-2-mapper-xml" class="headerlink" title="2.2 mapper.xml"></a>2.2 mapper.xml</h5><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;!-- 查询订单关联查询用户信息 --&gt;</span><br><span class="line">   &lt;select id=<span class="string">"findOrdersUser"</span> resultType=<span class="string">"OrderMapperCustom"</span>&gt;</span><br><span class="line">   	select orders.*,user.username,user.address </span><br><span class="line">	from orders,user </span><br><span class="line">	where orders.user_id = user.id</span><br><span class="line">   &lt;/select&gt;</span><br></pre></td></tr></table></figure>
+<h5 id="2-3-mapper-java"><a href="#2-3-mapper-java" class="headerlink" title="2.3 mapper.java"></a>2.3 mapper.java</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//查询订单关联用户查询信息</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> List&lt;OrdersCustom&gt; <span class="title">findOrdersUser</span><span class="params">()</span> <span class="keyword">throws</span> Exception</span>;</span><br></pre></td></tr></table></figure>
+<h4 id="4-resultMap"><a href="#4-resultMap" class="headerlink" title="4. resultMap"></a>4. <strong>resultMap</strong></h4><h5 id="3-1思路"><a href="#3-1思路" class="headerlink" title="3.1思路"></a>3.1思路</h5><blockquote>
+<p>使用resultMap将查询结果中的订单信息映射到Orders对象中，在orders类中添加User属性，将关联查询出来的用户信息映射到orders对象中的user属性中。</p>
+<p>需要在Orders类中添加user属性。</p>
+</blockquote>
+<h5 id="3-2mapper-xml"><a href="#3-2mapper-xml" class="headerlink" title="3.2mapper.xml"></a>3.2mapper.xml</h5><blockquote>
+<ol>
+<li><p>resultMap定义</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">&gt;    &lt;!-- 查询订单关联查询用户信息的resultMap</span><br><span class="line">&gt;    	将整个查询结果映射到</span><br><span class="line">&gt;    	type:resultMap最终映射的Java对象类型，可以使用别名</span><br><span class="line">&gt;    	id:对resultMap的唯一标识</span><br><span class="line">&gt;    	 --&gt;</span><br><span class="line">&gt;    	 &lt;resultMap type=<span class="string">"orders"</span> id=<span class="string">"OrdersUserResultMap"</span>&gt;</span><br><span class="line">&gt;    	 	&lt;!-- 配置映射的订单信息 --&gt;</span><br><span class="line">&gt;    	 	&lt;!-- id标识查询结果集的唯一标识,也就是订单信息中得唯一标识，如果多个列组成唯一标识，配置多个id</span><br><span class="line">&gt;    	 	column：查询出来的列名的唯一标识</span><br><span class="line">&gt;    	 	property:查询出来的列名的唯一标识所映射到的Orders中那个属性名</span><br><span class="line">&gt;    	 	 --&gt;</span><br><span class="line">&gt;    	 	&lt;id column=<span class="string">"id"</span> property=<span class="string">"id"</span>/&gt;</span><br><span class="line">&gt;    	 	&lt;!-- result对普通名映射定义</span><br><span class="line">&gt;    	 	column：查询出来的列名</span><br><span class="line">&gt;    	 	property:type指定的pojo类型中的属性名</span><br><span class="line">&gt;    	 	最终resultMap对columnh和property做一个映射关系（对应关系）</span><br><span class="line">&gt;    	 	 --&gt;</span><br><span class="line">&gt;    	 	&lt;result column=<span class="string">"user_id"</span> property=<span class="string">"userId"</span>/&gt;</span><br><span class="line">&gt;    	 	&lt;result column=<span class="string">"number"</span> property=<span class="string">"number"</span>/&gt;</span><br><span class="line">&gt;    	 	&lt;result column=<span class="string">"createtime"</span> property=<span class="string">"createtime"</span>/&gt;</span><br><span class="line">&gt;    	 	&lt;result column=<span class="string">"note"</span> property=<span class="string">"note"</span>/&gt;</span><br><span class="line">&gt;    	 	</span><br><span class="line">&gt;    	 	&lt;!-- 配置映射的关联的用户信息 --&gt;</span><br><span class="line">&gt;    	 	&lt;!-- association:用于映射查询关联单个对象的信息</span><br><span class="line">&gt;    	 	property:将关联查询的用户信息映射到Orders中的那个属性</span><br><span class="line">&gt;    	 	javaType:property所指定的属性的类型，可以使用别名</span><br><span class="line">&gt;    	 	 --&gt;</span><br><span class="line">&gt;    	 	&lt;association property=<span class="string">"user"</span> javaType=<span class="string">"User"</span>&gt;</span><br><span class="line">&gt;    	 		&lt;!-- id:关联查询用户的唯一标识</span><br><span class="line">&gt;    	 		javaType:映射到user的那个属性中</span><br><span class="line">&gt;    	 		 --&gt;</span><br><span class="line">&gt;    	 		&lt;id column=<span class="string">"user_id"</span> javaType=<span class="string">"id"</span>/&gt;</span><br><span class="line">&gt;    	 		&lt;result column=<span class="string">"username"</span> property=<span class="string">"username"</span>/&gt;</span><br><span class="line">&gt;    	 		&lt;result column=<span class="string">"address"</span> property=<span class="string">"address"</span>/&gt;</span><br><span class="line">&gt;    	 	&lt;/association&gt;</span><br><span class="line">&gt;    	 &lt;/resultMap&gt;</span><br><span class="line">&gt;    	 </span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+</blockquote>
+<p>&gt;</p>
+<blockquote>
+<ol>
+<li><p>statement的定义</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&gt;    &lt;!-- 查询订单关联查询用户信息 resultMap映射--&gt;</span><br><span class="line">&gt;        &lt;select id=<span class="string">"findOrdersUserResultMap"</span> resultMap=<span class="string">"OrdersUserResultMap"</span>&gt;</span><br><span class="line">&gt;        	select orders.*,user.username,user.address </span><br><span class="line">&gt;    		from orders,user </span><br><span class="line">&gt;    		where orders.user_id = user.id</span><br><span class="line">&gt;        &lt;/select&gt;</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+</blockquote>
+<p>&gt;</p>
+<blockquote>
+<p>   ​</p>
+<p>   ​</p>
+</blockquote>
+<h5 id="3-3mapper-java"><a href="#3-3mapper-java" class="headerlink" title="3.3mapper.java"></a>3.3mapper.java</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testFindOrdersUserReaultMap</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">		SqlSession sqlSession = sqlSessionFactory.openSession();</span><br><span class="line">		</span><br><span class="line">		<span class="comment">//创建代理对象</span></span><br><span class="line">		OrdersMapperCustom ordersMapperCustom = sqlSession.getMapper(OrdersMapperCustom.class);</span><br><span class="line">		</span><br><span class="line">		List&lt;Orders&gt; list = ordersMapperCustom.findOrdersUserResultMap();</span><br><span class="line">		</span><br><span class="line">		System.out.println(list);</span><br><span class="line">		</span><br><span class="line">		sqlSession.close();</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="4-resultMap和resultType"><a href="#4-resultMap和resultType" class="headerlink" title="4.resultMap和resultType"></a>4.<strong>resultMap和resultType</strong></h4><blockquote>
+<p>实现一对一查询：</p>
+<p>resultType:使用resultType实现较为简单，如果pojo中没有查询出来的列名，需要增加列名对应的属性，即可完成映射。</p>
+<p>resultMap:需要单独定义resultMap，实现有点麻烦，如果有对查询结果又特殊的要求(所查询的列必须映射到对应对象属性中)，使用rsultMap可以完成将关联查询映射pojo的属性中。</p>
+<p>resultMap可以实现延迟加载，resultType无法实现延迟加载。</p>
+</blockquote>
+
       
     </div>
     
@@ -429,8 +485,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -487,6 +552,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#高级映射一对一查询"><span class="nav-number">1.</span> <span class="nav-text">高级映射一对一查询</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-需求"><span class="nav-number">1.1.</span> <span class="nav-text">1. 需求</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-sql语句"><span class="nav-number">1.2.</span> <span class="nav-text">2. sql语句</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-resultType"><span class="nav-number">1.3.</span> <span class="nav-text">3. resultType</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#2-1-创建pojo"><span class="nav-number">1.3.1.</span> <span class="nav-text">2.1 创建pojo</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-2-mapper-xml"><span class="nav-number">1.3.2.</span> <span class="nav-text">2.2 mapper.xml</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-3-mapper-java"><span class="nav-number">1.3.3.</span> <span class="nav-text">2.3 mapper.java</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-resultMap"><span class="nav-number">1.4.</span> <span class="nav-text">4. resultMap</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#3-1思路"><span class="nav-number">1.4.1.</span> <span class="nav-text">3.1思路</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-2mapper-xml"><span class="nav-number">1.4.2.</span> <span class="nav-text">3.2mapper.xml</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-3mapper-java"><span class="nav-number">1.4.3.</span> <span class="nav-text">3.3mapper.java</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-resultMap和resultType"><span class="nav-number">1.5.</span> <span class="nav-text">4.resultMap和resultType</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       

@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="manba的笔记博客">
+<meta name="description" content="mybatis基础知识1.mybatis是什么  mybatis是一个优秀的基于java的持久层框架，它内部封装了jdbc，使开发者只需要关注sql语句本身，而不需要花费精力去处理加载驱动、创建连接、创建statement等繁杂的过程。 mabatis让程序将主要精力放在sql上，通过mybatis提供的映射方式，自动灵活生成（半自动化大部分需要程序员编写sql）满足需要sql语句。 mybati">
 <meta name="keywords" content="mybatis">
 <meta property="og:type" content="article">
 <meta property="og:title" content="mybatis基础知识">
 <meta property="og:url" content="http://yoursite.com/2018/01/29/mybatis基础知识/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="manba的笔记博客">
+<meta property="og:description" content="mybatis基础知识1.mybatis是什么  mybatis是一个优秀的基于java的持久层框架，它内部封装了jdbc，使开发者只需要关注sql语句本身，而不需要花费精力去处理加载驱动、创建连接、创建statement等繁杂的过程。 mabatis让程序将主要精力放在sql上，通过mybatis提供的映射方式，自动灵活生成（半自动化大部分需要程序员编写sql）满足需要sql语句。 mybati">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-01-29T03:43:05.000Z">
+<meta property="og:updated_time" content="2018-01-29T03:54:01.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="mybatis基础知识">
-<meta name="twitter:description" content="manba的笔记博客">
+<meta name="twitter:description" content="mybatis基础知识1.mybatis是什么  mybatis是一个优秀的基于java的持久层框架，它内部封装了jdbc，使开发者只需要关注sql语句本身，而不需要花费精力去处理加载驱动、创建连接、创建statement等繁杂的过程。 mabatis让程序将主要精力放在sql上，通过mybatis提供的映射方式，自动灵活生成（半自动化大部分需要程序员编写sql）满足需要sql语句。 mybati">
 
 
 
@@ -330,7 +330,142 @@
       
 
       
-        
+        <h3 id="mybatis基础知识"><a href="#mybatis基础知识" class="headerlink" title="mybatis基础知识"></a><strong>mybatis基础知识</strong></h3><h4 id="1-mybatis是什么"><a href="#1-mybatis是什么" class="headerlink" title="1.mybatis是什么"></a><strong>1.mybatis是什么</strong></h4><blockquote>
+<ol>
+<li>mybatis是一个优秀的基于java的持久层框架，它内部封装了jdbc，使开发者只需要关注sql语句本身，而不需要花费精力去处理加载驱动、创建连接、创建statement等繁杂的过程。</li>
+<li>mabatis让程序将主要精力放在sql上，通过mybatis提供的映射方式，自动灵活生成（半自动化大部分需要程序员编写sql）满足需要sql语句。</li>
+<li>mybatis可以将preparedStatement中的参数自动进行输出映射，将查询结果集灵活映射成java对象（输出映射）。</li>
+<li>mybatis通过xml或注解的方式将要执行的各种statement配置起来，并通过java对象和statement中sql的动态参数进行映射生成最终执行的sql语句，最后由mybatis框架执行sql并将结果映射为java对象并返回。</li>
+</ol>
+</blockquote>
+<h4 id="2-mybatis框架"><a href="#2-mybatis框架" class="headerlink" title="2.mybatis框架"></a><strong>2.mybatis框架</strong></h4><blockquote>
+<blockquote>
+<ol>
+<li>SqlMapConfig.xml(是mybatis全局配置文件 名称不固定的)配置了运行环境，数据源，事务等mybatis运行环境</li>
+</ol>
+<p>配置了映射文件（配置sql语句）</p>
+<p>mapper.xml（配置文件）</p>
+<p>2.SqlSessionFactory（会话工厂）</p>
+<p>作用：创建SqlSession</p>
+<p>3.SqlSession(会话) 面向用户的接口</p>
+<p>作用：操作数据库（发出sql 增删改查）</p>
+<p>4.Excutor(执行器)是一个接口（基本执行器，缓存执行器）</p>
+<p>作用：SqlSession内部通过执行器操作数据库</p>
+<p>5.mappedStatement (底层封装对象)</p>
+<p>作用：对数据库存储封装，包括sql语句，数据参数，输出结果类型。</p>
+</blockquote>
+</blockquote>
+<h3 id="3-步骤"><a href="#3-步骤" class="headerlink" title="3.步骤"></a><strong>3.步骤</strong></h3><ol>
+<li><p>映射文件</p>
+<blockquote>
+<p>映射文件命名：</p>
+<p>xxx.xml(原始ibatis命名)，mapper代理开发映射文件叫xxxMapper.xml，比如UserMapper.xml</p>
+<p>在映射文件中配置sql语句</p>
+</blockquote>
+</li>
+<li><p>在SqlMapConfig中加载映射文件</p>
+<blockquote>
+<!-- 加载映射文件 -->
+<pre><code>&lt;mappers&gt;
+    &lt;mapper resource=&quot;/sqlmap/User.xml&quot;/&gt;
+&lt;/mappers&gt;
+</code></pre></blockquote>
+</li>
+</ol>
+<h4 id="4-查询用户"><a href="#4-查询用户" class="headerlink" title="4.查询用户"></a><strong>4.查询用户</strong></h4><p>映射文件中</p>
+<blockquote>
+<!-- namespace命名空间，作用是对sql进行分类化管理，
+进行sql隔离 注意: 使用mapper代理方法开发的话，namespace有特殊重要的作用
+ -->
+<mapper namespace="test"><br><br>    <!-- 在映射文件中配置很多sql语句 --><br>    <!-- 通过id查询用户表导入记录 --><br>    <!-- 通过select执行数据库查询
+    id：标识映射文件中的sql
+    parameterType：指定输入参数类型
+    resultType：指定sql输出结果所映射的java对象类型，select指定resultType表示将单条记录映射成的java对象
+    将sql语句封装到mappedStatement对象中，所以将id成为statement的id
+    #{}表示一个占位符
+    #{id}：其中的id表示接受输入的参数，id就是参数名，如果输入参数是简单类型，#{}中的参数名可以任意，value或其他都行
+    --><br>    <select id="findUserById" parametertype="int" resulttype="com.hzf.mybatis.po.User"><br>        select <em> from user where id=#{id}<br>    </em></select><br><br>    <!-- 根据用户名模糊查询用户信息 
+        resultType：指定就是将单条记录映射成的java对象
+    --><br><br>    <!-- 
+        ${}表示拼接sql，将接受到的参数内容，不加任何修饰的拼接到sql中
+        使用${}拼接sql，可能引起sql注入
+        ${value}：接受输入的参数的内容，如果参数是简单类型，${}中参数名只能是value.
+     --><br>    <select id="findUserByName" parametertype="java.lang.String" resulttype="com.hzf.mybatis.po.User"><br>        select  from user where username like ‘%${value}%’<br>    </select><br></mapper>
+
+</blockquote>
+<h4 id="5-添加用户信息"><a href="#5-添加用户信息" class="headerlink" title="5.添加用户信息"></a><strong>5.添加用户信息</strong></h4><blockquote>
+<!-- 添加用户 -->
+<pre><code>&lt;!-- 
+     parameterType:指定输入参数类型数pojo(包括用户信息)
+     #{}中指定pojo的属性名，接受到pojo对象的属性值，mybatis通过OGNL获取对象的属性值。
+ --&gt;
+&lt;insert id=&quot;insertUser&quot; parameterType=&quot;com.hzf.mybatis.po.User&quot;&gt;
+    insert into user(username,birthday,sex,address) value(#{username},#{birthday},#{sex},#{address})
+&lt;/insert&gt;
+</code></pre><p><strong>自增主键的返回</strong></p>
+<p>mysql自增主键，执行insert提交之前自动生成一个自增主键</p>
+<p>通过mysql函数获取到刚刚插入记录的自增主键：LAST_INSERT_ID()</p>
+<p>insert之后调用此函数</p>
+<p>代码：</p>
+<blockquote>
+<!-- 添加用户 -->
+<pre><code>&lt;!-- 
+     parameterType:指定输入参数类型数pojo(包括用户信息)
+     #{}中指定pojo的属性名，接受到pojo对象的属性值，mybatis通过OGNL获取对象的属性值。
+ --&gt;
+&lt;insert id=&quot;insertUser&quot; parameterType=&quot;com.hzf.mybatis.po.User&quot;&gt;
+
+    &lt;!-- 
+    将插入数据的主键返回至user对象中
+    SELECT LAST_INSERT_ID() 得到刚insert进去的主键值，只适用于主键自增时
+    keyProperty：将查询到的主键值记录到parameterType指定的对象的对应属性中
+    order：SELECT LAST_INSERT_ID()的执行顺序，相对于insert语句来说它的执行顺序
+     --&gt;
+    &lt;selectKey keyProperty=&quot;id&quot; order=&quot;AFTER&quot; resultType=&quot;java.lang.Integer&quot;&gt;
+        SELECT LAST_INSERT_ID()
+    &lt;/selectKey&gt;
+    insert into user(username,birthday,sex,address) value(#{username},#{birthday},#{sex},#{address})
+&lt;/insert&gt;
+</code></pre></blockquote>
+</blockquote>
+<h4 id="6-删除用户"><a href="#6-删除用户" class="headerlink" title="6.删除用户"></a><strong>6.删除用户</strong></h4><blockquote>
+<!-- 根据用户id删除用户 -->
+<pre><code>&lt;delete id=&quot;deleteUser&quot; parameterType=&quot;int&quot;&gt;
+    delete from user where id=#{id}
+&lt;/delete&gt;
+</code></pre></blockquote>
+<h4 id="7-更新用户"><a href="#7-更新用户" class="headerlink" title="7.更新用户"></a><strong>7.更新用户</strong></h4><blockquote>
+<!-- 根据id更新用户
+
+    需要传入用户id
+    需要传入更新信息
+    parameterType指定user对象，包括id和更新信息，必须存在id
+    #{id}从user对象中获取id属性值
+     -->
+<pre><code>&lt;update id=&quot;updateUser&quot; parameterType=&quot;com.hzf.mybatis.po.User&quot;&gt;
+   update user set username=#{username},birthday=#{birthday},sex=#{sex},address=#{address}
+   where id=#{id}
+&lt;/update&gt;
+</code></pre></blockquote>
+<h4 id="8-增删改查源码"><a href="#8-增删改查源码" class="headerlink" title="8.增删改查源码"></a><strong>8.增删改查源码</strong></h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyBatisFirst</span> </span>&#123;</span><br><span class="line">	</span><br><span class="line">	<span class="comment">//根据id查询用户信息，得到一条信息的结果</span></span><br><span class="line">	<span class="meta">@Test</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">findUserByIdTest</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		</span><br><span class="line">		<span class="comment">//MyBatis配置文件</span></span><br><span class="line">		String resource = <span class="string">"SqlMapConfig.xml"</span>;</span><br><span class="line">		</span><br><span class="line">		InputStream inputStream = <span class="keyword">null</span>;</span><br><span class="line">		</span><br><span class="line">		<span class="keyword">try</span> &#123;	</span><br><span class="line">			<span class="comment">//得到配置文件流</span></span><br><span class="line">			inputStream = Resources.getResourceAsStream(resource);</span><br><span class="line">		&#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">			e.printStackTrace();</span><br><span class="line">		&#125;</span><br><span class="line">		</span><br><span class="line">		<span class="comment">//创建会话工厂</span></span><br><span class="line">		SqlSessionFactory sqlSessionFactory = <span class="keyword">new</span> 			     SqlSessionFactoryBuilder().build(inputStream);</span><br><span class="line">		</span><br><span class="line">		<span class="comment">//通过工厂得到SqlSession</span></span><br><span class="line">		SqlSession sqlSession = sqlSessionFactory.openSession();</span><br><span class="line">		</span><br><span class="line">		<span class="comment">//通过SqlSession操作数据，第一个参数为statement的id，第二个参数指定和映射文件中所匹配的parameterType类型的参数</span></span><br><span class="line">		User user = sqlSession.selectOne(<span class="string">"test.findUserById"</span>, <span class="number">1</span>);</span><br><span class="line">		</span><br><span class="line">		System.out.println(user.getUsername() + <span class="string">" "</span> + user.getAddress());</span><br><span class="line">		</span><br><span class="line">		<span class="comment">//释放资源</span></span><br><span class="line">		sqlSession.close();</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	</span><br><span class="line">	<span class="comment">//根据用户名模糊查询用户信息 可能存在多条记录</span></span><br><span class="line">	<span class="meta">@Test</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">findUserByNameTest</span><span class="params">()</span></span>&#123;</span><br><span class="line">		</span><br><span class="line">		<span class="comment">//MyBatis配置文件</span></span><br><span class="line">				String resource = <span class="string">"SqlMapConfig.xml"</span>;</span><br><span class="line">				</span><br><span class="line">				InputStream inputStream = <span class="keyword">null</span>;</span><br><span class="line">				</span><br><span class="line">				<span class="keyword">try</span> &#123;	</span><br><span class="line">					<span class="comment">//得到配置文件流</span></span><br><span class="line">					inputStream = Resources.getResourceAsStream(resource);</span><br><span class="line">				&#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">					e.printStackTrace();</span><br><span class="line">				&#125;</span><br><span class="line">				</span><br><span class="line">				<span class="comment">//创建会话工厂</span></span><br><span class="line">				SqlSessionFactory sqlSessionFactory = <span class="keyword">new</span> SqlSessionFactoryBuilder().build(inputStream);</span><br><span class="line">				</span><br><span class="line">				<span class="comment">//通过工厂得到SqlSession</span></span><br><span class="line">				SqlSession sqlSession = sqlSessionFactory.openSession();</span><br><span class="line">				</span><br><span class="line">				<span class="comment">//list中的User与映射文件中resultType指定的对象类型一致</span></span><br><span class="line">				List&lt;User&gt; list = sqlSession.selectList(<span class="string">"test.findUserByName"</span>, <span class="string">"h"</span>);</span><br><span class="line">				System.out.println(list);</span><br><span class="line">				</span><br><span class="line">				<span class="comment">//释放资源</span></span><br><span class="line">				sqlSession.close();</span><br><span class="line">				</span><br><span class="line">				</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="comment">//添加用户</span></span><br><span class="line">	<span class="meta">@Test</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">insertUserTest</span><span class="params">()</span></span>&#123;</span><br><span class="line">		</span><br><span class="line">		<span class="comment">//MyBatis配置文件</span></span><br><span class="line">				String resource = <span class="string">"SqlMapConfig.xml"</span>;</span><br><span class="line">				</span><br><span class="line">				InputStream inputStream = <span class="keyword">null</span>;</span><br><span class="line">				</span><br><span class="line">				<span class="keyword">try</span> &#123;	</span><br><span class="line">					<span class="comment">//得到配置文件流</span></span><br><span class="line">					inputStream = Resources.getResourceAsStream(resource);</span><br><span class="line">				&#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">					e.printStackTrace();</span><br><span class="line">				&#125;</span><br><span class="line">				</span><br><span class="line">				<span class="comment">//创建会话工厂</span></span><br><span class="line">				SqlSessionFactory sqlSessionFactory = <span class="keyword">new</span> SqlSessionFactoryBuilder().build(inputStream);</span><br><span class="line">				</span><br><span class="line">				<span class="comment">//通过工厂得到SqlSession</span></span><br><span class="line">				SqlSession sqlSession = sqlSessionFactory.openSession();</span><br><span class="line">				</span><br><span class="line">				<span class="comment">//插入用户对象</span></span><br><span class="line">				User user = <span class="keyword">new</span> User(<span class="string">"黄正福"</span>, <span class="string">"男"</span>, <span class="keyword">new</span> Date(), <span class="string">"江苏南京"</span>);</span><br><span class="line">				<span class="comment">//插入数据</span></span><br><span class="line">				sqlSession.insert(<span class="string">"test.insertUser"</span>, user);</span><br><span class="line">				</span><br><span class="line">				<span class="comment">//提交事物</span></span><br><span class="line">				sqlSession.commit();</span><br><span class="line">				</span><br><span class="line">				System.out.println(user.getId());</span><br><span class="line">				</span><br><span class="line">				<span class="comment">//释放资源</span></span><br><span class="line">				sqlSession.close();</span><br><span class="line">				</span><br><span class="line">				</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="comment">//根据用户id删除用户</span></span><br><span class="line">	<span class="meta">@Test</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">deleteUserTest</span><span class="params">()</span></span>&#123;</span><br><span class="line">		</span><br><span class="line">		<span class="comment">//MyBatis配置文件</span></span><br><span class="line">				String resource = <span class="string">"SqlMapConfig.xml"</span>;</span><br><span class="line">				</span><br><span class="line">				InputStream inputStream = <span class="keyword">null</span>;</span><br><span class="line">				</span><br><span class="line">				<span class="keyword">try</span> &#123;	</span><br><span class="line">					<span class="comment">//得到配置文件流</span></span><br><span class="line">					inputStream = Resources.getResourceAsStream(resource);</span><br><span class="line">				&#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">					e.printStackTrace();</span><br><span class="line">				&#125;</span><br><span class="line">				</span><br><span class="line">				<span class="comment">//创建会话工厂</span></span><br><span class="line">				SqlSessionFactory sqlSessionFactory = <span class="keyword">new</span> SqlSessionFactoryBuilder().build(inputStream);</span><br><span class="line">				</span><br><span class="line">				<span class="comment">//通过工厂得到SqlSession</span></span><br><span class="line">				SqlSession sqlSession = sqlSessionFactory.openSession();</span><br><span class="line">				</span><br><span class="line">				<span class="comment">//传入用户id</span></span><br><span class="line">				sqlSession.delete(<span class="string">"test.deleteUser"</span>, <span class="number">13</span>);</span><br><span class="line">				</span><br><span class="line">				<span class="comment">//提交事物</span></span><br><span class="line">				sqlSession.commit();</span><br><span class="line">				</span><br><span class="line">				<span class="comment">//释放资源</span></span><br><span class="line">				sqlSession.close();</span><br><span class="line">						</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="comment">//更新用户信息</span></span><br><span class="line">	<span class="meta">@Test</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">updateUserTest</span><span class="params">()</span></span>&#123;</span><br><span class="line">		</span><br><span class="line">		<span class="comment">//MyBatis配置文件</span></span><br><span class="line">				String resource = <span class="string">"SqlMapConfig.xml"</span>;</span><br><span class="line">				</span><br><span class="line">				InputStream inputStream = <span class="keyword">null</span>;</span><br><span class="line">				</span><br><span class="line">				<span class="keyword">try</span> &#123;	</span><br><span class="line">					<span class="comment">//得到配置文件流</span></span><br><span class="line">					inputStream = Resources.getResourceAsStream(resource);</span><br><span class="line">				&#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">					e.printStackTrace();</span><br><span class="line">				&#125;</span><br><span class="line">				</span><br><span class="line">				<span class="comment">//创建会话工厂</span></span><br><span class="line">				SqlSessionFactory sqlSessionFactory = <span class="keyword">new</span> SqlSessionFactoryBuilder().build(inputStream);</span><br><span class="line">				</span><br><span class="line">				<span class="comment">//通过工厂得到SqlSession</span></span><br><span class="line">				SqlSession sqlSession = sqlSessionFactory.openSession();</span><br><span class="line">				</span><br><span class="line">				<span class="comment">//更新的用户信息</span></span><br><span class="line">				User user = <span class="keyword">new</span> User(<span class="number">11</span>, <span class="string">"黄正福"</span>, <span class="string">"男"</span>, <span class="keyword">new</span> Date(), <span class="string">"浙江杭州"</span>);</span><br><span class="line">				</span><br><span class="line">				<span class="comment">//传入用户id</span></span><br><span class="line">				sqlSession.update(<span class="string">"test.updateUser"</span>, user);</span><br><span class="line">				</span><br><span class="line">				<span class="comment">//提交事物</span></span><br><span class="line">				sqlSession.commit();</span><br><span class="line">				</span><br><span class="line">				<span class="comment">//释放资源</span></span><br><span class="line">					sqlSession.close();</span><br><span class="line">							</span><br><span class="line">		&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="9-总结"><a href="#9-总结" class="headerlink" title="9.总结"></a><strong>9.总结</strong></h4><blockquote>
+<ol>
+<li>selectOne表示查询一条记录进行映射，如果使用selectOne可以实现，使用selectList也可以实现（list中只有一条记录）</li>
+<li>selectList表示查询一个列表（多条记录）进行映射，如果使用selectList不能使用selectOne。</li>
+</ol>
+</blockquote>
+<p>#{}与${}</p>
+<blockquote>
+<p>#{}表示一个站位符，#{}接受输入参数，类型可以死简单类型，pojo，hashmap</p>
+<p>如果接受简单类型，#{}中可以写成value或者其他名称</p>
+<p>#{}接受pojo对象，通过OGNL读取对象中的属性值，通过属性.属性.属性…的方式获取对象属性值。</p>
+<p>${}表示一个拼接符，将接受到的参数内容，不加任何修饰的拼接到sql中，</p>
+<p>\${}会引起sql注入，所以不建议使用</p>
+<p>${}接受输入参数，类型可以死简单类型，pojo，hashmap</p>
+<p>如果接受简单类型，${}中只能写成value</p>
+<p>${}接受pojo对象，通过OGNL读取对象中的属性值，通过属性.属性.属性…的方式获取对象属性值。</p>
+</blockquote>
+
       
     </div>
     
@@ -429,8 +564,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -487,6 +631,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#mybatis基础知识"><span class="nav-number">1.</span> <span class="nav-text">mybatis基础知识</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-mybatis是什么"><span class="nav-number">1.1.</span> <span class="nav-text">1.mybatis是什么</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-mybatis框架"><span class="nav-number">1.2.</span> <span class="nav-text">2.mybatis框架</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-步骤"><span class="nav-number">2.</span> <span class="nav-text">3.步骤</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#4-查询用户"><span class="nav-number">2.1.</span> <span class="nav-text">4.查询用户</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-添加用户信息"><span class="nav-number">2.2.</span> <span class="nav-text">5.添加用户信息</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-删除用户"><span class="nav-number">2.3.</span> <span class="nav-text">6.删除用户</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7-更新用户"><span class="nav-number">2.4.</span> <span class="nav-text">7.更新用户</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#8-增删改查源码"><span class="nav-number">2.5.</span> <span class="nav-text">8.增删改查源码</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#9-总结"><span class="nav-number">2.6.</span> <span class="nav-text">9.总结</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       

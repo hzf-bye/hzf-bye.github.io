@@ -281,7 +281,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/01/29/SqlMapConfig/" itemprop="url">SqlMapConfig</a></h1>
+                <a class="post-title-link" href="/2018/01/29/SqlMapConfig/" itemprop="url">未命名</a></h1>
         
 
         <div class="post-meta">
@@ -333,8 +333,15 @@
       
         
           
-          
-          
+          SqlMapConfig.xml(名称不固定)1. properties属性
+需求
+
+
+将数据库连接参数单独配置在db.properties中，只需要在SqlMapConfig.xml中加载db.properties的属性值。
+
+在SqlMapConfig.xml中就不需要对数据库连接参数硬编码。
+
+          ...
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/2018/01/29/SqlMapConfig/#more" rel="contents">
@@ -459,8 +466,15 @@
       
         
           
-          
-          
+          1.整合思路
+
+需要spring通过单例方式管理SqlSessionFactory
+spring和mybatis整合生成代理对象，使用SqlSessionFactory创建Sqlsession(spring和mybatis整合自动完成)
+持久层的mapper都需要由spring进行管理
+
+
+2.整合
+          ...
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/2018/01/29/spring与mybatis的整合/#more" rel="contents">
@@ -585,8 +599,14 @@
       
         
           
-          
-          
+          mybatis开发dao的方法1.Sqlsession使用范围
+
+SqlSessionFactoryBuilder
+
+
+通过SqlSessionFactoryBuilder创建会话工厂SqlSessionFactory
+将SqlSessionFactoryBuilder当成一个工具类使用即可，不需要
+          ...
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/2018/01/29/mybatis开发dao的方法/#more" rel="contents">
@@ -711,8 +731,11 @@
       
         
           
-          
-          
+          mybatis基础知识1.mybatis是什么
+
+mybatis是一个优秀的基于java的持久层框架，它内部封装了jdbc，使开发者只需要关注sql语句本身，而不需要花费精力去处理加载驱动、创建连接、创建statement等繁杂的过程。
+mabatis让程序将主要精力放在sql上，通过mybatis
+          ...
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/2018/01/29/mybatis基础知识/#more" rel="contents">
@@ -837,8 +860,12 @@
       
         
           
-          
-          
+          延迟加载1.什么是延迟加载
+resultMap可以实现高级映射（使用association，collection实现一对一及一对多映射），association、*collection具备延迟加载功能。
+需求：
+
+如果查询订单并且关联查询用户信息。如果先查询订单信息即可满足需求，当我我们呢需要查询用
+          ...
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/2018/01/29/延迟加载/#more" rel="contents">
@@ -963,8 +990,19 @@
       
         
           
-          
-          
+          输入映射与输出映射1.输入映射
+通过parameterType指定输入参数的类型，类型可以是简单类型、hashmap、pojo包装类型。
+
+
+需求
+
+完成用户信息的综合查询，需要传入查询条件很复杂（可能包括用户信息，其他信息，比如商品、订单）
+
+
+定义包装类型pojo
+
+针对上边需求，建议使用自定义
+          ...
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/2018/01/29/输入映射与输出映射/#more" rel="contents">
@@ -1089,8 +1127,14 @@
       
         
           
-          
-          
+          高级映射一对一查询1. 需求
+查询订单信息，关联查询创建订单的用户信息。
+
+2. sql语句
+确定查询的主表：订单表
+确定查询的关联表：用户表
+1234&gt; select orders.*,user.username,user.address &gt; from orders,user &gt;
+          ...
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/2018/01/29/高级映射一对一查询/#more" rel="contents">
@@ -1215,8 +1259,14 @@
       
         
           
-          
-          
+          高级映射一对多查询1. 需求
+查询订单及订单明细的需求。
+
+2. sql语句
+确定查询的主表：订单表
+确定查询的关联表：订单明细表
+1234&gt; select orders.*,user.username,user.address,orderdetail.items_id,orderdetail
+          ...
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/2018/01/29/高级映射一对多查询/#more" rel="contents">
@@ -1341,8 +1391,15 @@
       
         
           
-          
-          
+          高级映射多对多查询1.需求
+查询用户及用户购买商品信息。
+
+2.分析sql语句
+查询主表是：用户表
+关联表：由于用户和商品没有直接关联，通过订单和订单明细进行关联，所以关联表有：orders,orderdetail,items.
+
+1234select orders.*,user.username,
+          ...
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/2018/01/29/高级映射多对多查询/#more" rel="contents">
@@ -1467,8 +1524,15 @@
       
         
           
-          
-          
+          动态sql1.什么是动态sql
+mabatis核心是对sql语句进行灵活操作，通过表达式进行判断，对sql进行灵活拼接，组装。
+
+2.需求
+用户信息综合查询列表和用户信息查询列表总数这两个statement的定义使用动态sql
+对查询条件进行判断，如果输入参数不为空才进行查询条件拼接
+
+3.mapp
+          ...
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/2018/01/29/动态sql/#more" rel="contents">
