@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="mybatis," />
 
 
 
@@ -80,20 +80,21 @@
 
 
 <meta name="description" content="查询缓存-一级缓存与二级缓存1.什么是查询缓存  mybatis提供查询缓存，用户减轻数据压力，提高数据库性能。  mybatis提供一级缓存，和二级缓存。  Mybatis的一级缓存是指SqlSession。一级缓存的作用域是一个SqlSession。Mybatis默认开启一级缓存。在同一个SqlSession中，执行相同的查询SQL，第一次会去查询数据库，并写到缓存中；第二次直接从缓存中取。当">
+<meta name="keywords" content="mybatis">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Hexo">
-<meta property="og:url" content="http://yoursite.com/2017/11/21/mybatis/查询缓存-一级缓存与二级缓存/index.html">
+<meta property="og:title" content="查询缓存-一级缓存与二级缓存">
+<meta property="og:url" content="http://yoursite.com/2018/01/29/mybatis/查询缓存-一级缓存与二级缓存/index.html">
 <meta property="og:site_name" content="Hexo">
 <meta property="og:description" content="查询缓存-一级缓存与二级缓存1.什么是查询缓存  mybatis提供查询缓存，用户减轻数据压力，提高数据库性能。  mybatis提供一级缓存，和二级缓存。  Mybatis的一级缓存是指SqlSession。一级缓存的作用域是一个SqlSession。Mybatis默认开启一级缓存。在同一个SqlSession中，执行相同的查询SQL，第一次会去查询数据库，并写到缓存中；第二次直接从缓存中取。当">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://yoursite.com/2017/11/21/mybatis/查询缓存-一级缓存与二级缓存/一级缓存原理.jpg">
-<meta property="og:image" content="http://yoursite.com/2017/11/21/mybatis/查询缓存-一级缓存与二级缓存/二级缓存原理.jpg">
-<meta property="og:image" content="http://yoursite.com/2017/11/21/mybatis/查询缓存-一级缓存与二级缓存/ehcachejar包截图.jpg">
-<meta property="og:updated_time" content="2017-12-24T14:42:22.000Z">
+<meta property="og:image" content="http://yoursite.com/2018/01/29/mybatis/查询缓存-一级缓存与二级缓存/一级缓存原理.jpg">
+<meta property="og:image" content="http://yoursite.com/2018/01/29/mybatis/查询缓存-一级缓存与二级缓存/二级缓存原理.jpg">
+<meta property="og:image" content="http://yoursite.com/2018/01/29/mybatis/查询缓存-一级缓存与二级缓存/ehcachejar包截图.jpg">
+<meta property="og:updated_time" content="2018-01-29T02:45:57.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Hexo">
+<meta name="twitter:title" content="查询缓存-一级缓存与二级缓存">
 <meta name="twitter:description" content="查询缓存-一级缓存与二级缓存1.什么是查询缓存  mybatis提供查询缓存，用户减轻数据压力，提高数据库性能。  mybatis提供一级缓存，和二级缓存。  Mybatis的一级缓存是指SqlSession。一级缓存的作用域是一个SqlSession。Mybatis默认开启一级缓存。在同一个SqlSession中，执行相同的查询SQL，第一次会去查询数据库，并写到缓存中；第二次直接从缓存中取。当">
-<meta name="twitter:image" content="http://yoursite.com/2017/11/21/mybatis/查询缓存-一级缓存与二级缓存/一级缓存原理.jpg">
+<meta name="twitter:image" content="http://yoursite.com/2018/01/29/mybatis/查询缓存-一级缓存与二级缓存/一级缓存原理.jpg">
 
 
 
@@ -123,13 +124,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2017/11/21/mybatis/查询缓存-一级缓存与二级缓存/"/>
+  <link rel="canonical" href="http://yoursite.com/2018/01/29/mybatis/查询缓存-一级缓存与二级缓存/"/>
 
 
 
 
 
-  <title> | Hexo</title>
+  <title>查询缓存-一级缓存与二级缓存 | Hexo</title>
   
 
 
@@ -266,7 +267,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/11/21/mybatis/查询缓存-一级缓存与二级缓存/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/01/29/mybatis/查询缓存-一级缓存与二级缓存/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="hzf">
@@ -283,7 +284,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline"></h1>
+          <h1 class="post-title" itemprop="name headline">查询缓存-一级缓存与二级缓存</h1>
         
 
         <div class="post-meta">
@@ -295,8 +296,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-21T23:36:05+08:00">
-                2017-11-21
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-29T10:33:08+08:00">
+                2018-01-29
               </time>
             
 
@@ -536,6 +537,12 @@
 
     <footer class="post-footer">
       
+        <div class="post-tags">
+          
+            <a href="/tags/mybatis/" rel="tag"># mybatis</a>
+          
+        </div>
+      
 
       
       
@@ -545,8 +552,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/11/21/mybatis/延迟加载/" rel="next" title="">
-                <i class="fa fa-chevron-left"></i> 
+              <a href="/2017/12/24/未命名文件夹/two/" rel="next" title="two">
+                <i class="fa fa-chevron-left"></i> two
               </a>
             
           </div>
@@ -555,8 +562,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2017/11/21/mybatis/输入映射与输出映射/" rel="prev" title="">
-                 <i class="fa fa-chevron-right"></i>
+              <a href="/2018/01/29/three/" rel="prev" title="three">
+                three <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -665,7 +672,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-count">2</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
